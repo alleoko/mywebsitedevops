@@ -1,2 +1,2 @@
-# Terminal Website Template
+# Terminal Website
 
