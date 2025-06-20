@@ -31,7 +31,7 @@ const commands = {
             '* Jenkins',
             '---------------',
             'my-projects:</white>',
-            '* <a href="https://terminal.jcubic.pl">AWS EC2 S3 Web deployment</a>',
+            '* <a href="docker-nodejs.html">Docker and Node.js</a>',
             '* <a href="https://github.com/patorjk/figlet.js/">CICD Jenkins</a>',
             '* <a href="https://github.com/jcubic/isomorphic-lolcat">NGINX, MEMCACHED</a>',
             '<white>----------------</white>',
