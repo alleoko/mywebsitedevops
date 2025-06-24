@@ -32,7 +32,7 @@ const commands = {
             '---------------',
             'my-projects:</white>',
             '* <a href="docker-nodejs.html">Docker and Node.js</a>',
-            '* <a href="https://github.com/patorjk/figlet.js/">CICD Jenkins</a>',
+            '* <a href="simple-ec2-terraform.html">Creating EC2 using Terraform</a>',
             '* <a href="https://github.com/jcubic/isomorphic-lolcat">NGINX, MEMCACHED</a>',
             '<white>----------------</white>',
             '<white>my-contacts</white>',

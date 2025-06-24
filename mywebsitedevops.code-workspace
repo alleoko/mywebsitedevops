@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../Jenkins-Terraform-Demo-Project"
+		},
+		{
+			"path": "../Terraform-ec2-53-elb-s3-rds-project"
+		},
+		{
+			"path": "../Kubernetes-Tutorials"
+		}
+	],
+	"settings": {}
+}

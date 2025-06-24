@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Creating EC2 using terraform</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <h1>Creating EC2 using terraform</h1>
+  <p><em>By Alleoko</em></p>
+
+  <p>Docker makes it easier to build, deploy, and run applications inside containers. Here's how to package a Nodejs app into a Docker container in simple steps.</p>
+
+  <h2>1. Prepare your Node.js script</h2>
+  <p>Make sure you have a <code>package.json</code> file in your project directory. If you don't have one, you can create it using bash:</p>
+    <pre><code>npm init -y</code></pre>
+  <p>Create a src folder for index.js, for example <code>src/index.js</code>:</p>
+  <p>index.js</p>
+  <pre><code>const app = require('express')();
+
+app.get('/', (req, res ) => 
+    res.json({ message: 'Welcome to Docker World 🐳' }) 
+);
+
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => console.log(`app listening on http://localhost:${port}`) );</code></pre>
+
+  <h2>2. Create Dockerfile</h2>
+    <p>Create a file named <code>Dockerfile</code> in the root of your project directory with the following content:</p>
+  <pre><code>FROM node:12
+
+WORKDIR /app
+COPY package*.json ./
+RUN npm install
+COPY . .
+ENV PORT=8080
+EXPOSE 8080
+CMD [ "npm", "start" ]
+</code></pre>
+
+
+  <h2>4. Build the Docker Image</h2>
+  <pre><code>docker build -t nodejs-docker-app .</code></pre>
+
+  <h2>5. Run the Container</h2>
+  <pre><code>docker run -p 5000:8080 nodejs-docker-app</code></pre>
+
+  <p>You should now see your app running at <a href="http://localhost:5000" target="_blank">http://localhost:5000</a>.</p>
+
+   <h2>3. Create Docker Compose</h2>
+    <p>Optionally, you can create a <code>docker-compose.yml</code> file to simplify running your container:</p>
+    <pre><code>version: '3'
+services:
+  web:
+    build: .
+    ports:
+      - "8080:8080"
+  db:
+    image: "mysql"
+    environment: 
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - db-data:/foo
+
+volumes:
+  db-data:
+</code></pre>
+    <p>Run the following command to start your application using Docker Compose:</p>
+    <pre><code>docker-compose up</code></pre>
+    <p>Your application should now be accessible at <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>.</p>
+  <h2>Wrap-up</h2>
+  <p>That's it! You've created a Docker container for your Nodejs app and run it successfully. This same container can be pushed to Docker Hub or deployed to cloud platforms.</p>
+
+
+</body>
+</html>
