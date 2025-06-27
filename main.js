@@ -24,40 +24,38 @@ const commands = {
     whoami() {
         return [
             'whoami: <white>Alejo Len Aclan</white>',
-            'skills: <white>DevOps/Cloud ',
+            'skills: <white>DevOps/Cloud ❤️ ',
             '* AWS',
+            '* Terraform',
             '* Docker',
             '* Kubernetes',
             '* Jenkins',
+            '* Git',
+            '* Linux',
             '---------------',
             'my-projects:</white>',
             '* <a href="docker-nodejs.html">Docker and Node.js</a>',
             '* <a href="simple-ec2-terraform.html">Simple EC2 using Terraform</a>',
-            '* <a href="https://github.com/jcubic/isomorphic-lolcat">NGINX, MEMCACHED</a>',
+            '* <a href="https://gahdsashdkashdkashdasd">NGINX, MEMCACHED</a>',
             '<white>----------------</white>',
             '<white>my-contacts</white>',
             '* <a href="https://alleoko.xyz">website</a>',
-            '* <a href="https://github.com/jcubic/isomorphic-lolcat">linkedin</a>',
+            '* <a href="https://www.linkedin.com/in/alejo-len-aclan">linkedin</a>',
             '* email:alejolenaclan@gmail.com',
-            '',
-            '<a href="https://github.com/sponsors/jcubic">Sponsor ❤️ my Open Source work</a>',
-            ''
+            '<a href="https://github.com/alleoko">Sponsor ❤️ my Open Source work in GITHUB</a>'
         ].join('\n');
     },
     projects() {
         return [
             '',
             'My Projects:',
-            '* <a href="https://terminal.jcubic.pl">AWS EC2 S3 Web deployment</a>',
-            '* <a href="https://github.com/patorjk/figlet.js/">CICD Jenkins</a>',
-            '* <a href="https://github.com/jcubic/isomorphic-lolcat">NGINX, MEMCACHED</a>',
+            '* <a href="https://terasdasd">AWS EC2 S3 Web deployment</a>',
+            '* <a href="https://giasdasd.js/">CICD Jenkins</a>',
+            '* <a href="https://githuasdasdasdadcat">NGINX, MEMCACHED</a>',
             '',
-            '<a href="https://github.com/sponsors/jcubic">Sponsor ❤️ my Open Source work</a>',
+            '<a href="https://giadsadsadaadsbic">Sponsor ❤️ my Open Source work</a>',
             ''
         ].join('\n');
-    },
-    skills() {
-        this.echo(`aws, docker, jenkins, terraform`);
     },
     help() {
         this.echo(`List of available commands: ${help}`);
