@@ -15,7 +15,7 @@
 
   <p>This guide walks you through creating a simple EC2 instance on AWS using Terraform with just one file: <code>main.tf</code>.</p>
 
-    <h2>1. Create an AWS Access Key</h2>
+    <h2>1. Create an AWS Access Key and Keypair</h2>
   <p>To allow Terraform to authenticate with AWS, you need to create an Access Key:</p>
 <code>  Create Access Key for User Goto IAM > Users > terraform-user > Security credentials
 </code>
@@ -28,7 +28,8 @@
     <li>Default region name (e.g., <code>ap-southeast-1</code>)</li>
     <li>Default output format (press Enter to skip)</li>
   </ul>
-
+  <p>Next, create a key pair in the AWS Console:</p>
+  <p>Go to EC2 → Key Pairs → Create Key Pair. Name it <code>my-key-pair</code> and download the <code>.pem</code>
 
   <h2>2. Install Terraform</h2>
   <p>To get started, install Terraform from the official website:</p>
@@ -54,6 +55,10 @@ provider "aws" {
 resource "aws_instance" "example-alleoko" {
   ami           = "ami-0435fcf800fb5418d" # Example AMI ID for ap-southeast-1
   instance_type = "t2.micro"
+  key_name      = "my-key-pair" # This is your keypair you created earlier
+  tags = {
+    Name = "MyEC2Instance"
+  }
 }
 </code></pre>
 
