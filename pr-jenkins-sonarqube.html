@@ -3,80 +3,264 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Deploying a Node.js App to Docker</title>
+  <title>Jenkins and SonarQube using Docker Compose</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-  <a href="index.html" class="back-button" title="Go back">
+<a href="index.html" class="back-button" title="Go back">
   &#8592;
 </a>
-  <h1>Deploying a Node.js Application to Docker</h1>
-  <p><em>By Alleoko</em></p>
 
-  <p>Docker makes it easier to build, deploy, and run applications inside containers. Here's how to package a Nodejs app into a Docker container in simple steps.</p>
+<h1>Jenkins CI Pipeline with SonarQube Using Docker Compose</h1>
+<p><em>By Alleoko</em></p>
 
-  <h2>1. Prepare your Node.js script</h2>
-  <p>Make sure you have a <code>package.json</code> file in your project directory. If you don't have one, you can create it using bash:</p>
-    <pre><code>npm init -y</code></pre>
-  <p>Create a src folder for index.js, for example <code>src/index.js</code>:</p>
-  <p>index.js</p>
-  <pre><code>const app = require('express')();
+<p>
+This guide walks you through setting up <strong>Jenkins</strong> and <strong>SonarQube</strong> using
+<strong>Docker Compose</strong>, configuring Jenkins to connect to SonarQube, and verifying
+their connectivity using a Jenkins pipeline.
+</p>
 
-app.get('/', (req, res ) => 
-    res.json({ message: 'Welcome to Docker World 🐳' }) 
-);
+<hr />
 
-const port = process.env.PORT || 8080;
+<h2>1. Prerequisites</h2>
+<p>Make sure the following tools are installed on your machine:</p>
+<ul>
+  <li>Docker</li>
+  <li>Docker Compose (v2)</li>
+</ul>
 
-app.listen(port, () => console.log(`app listening on http://localhost:${port}`) );</code></pre>
+<p>Verify installation:</p>
+<pre><code>docker --version
+docker compose version</code></pre>
 
-  <h2>2. Create Dockerfile</h2>
-    <p>Create a file named <code>Dockerfile</code> in the root of your project directory with the following content:</p>
-  <pre><code>FROM node:12
+<hr />
 
-WORKDIR /app
-COPY package*.json ./
-RUN npm install
-COPY . .
-ENV PORT=8080
-EXPOSE 8080
-CMD [ "npm", "start" ]
-</code></pre>
+<h2>2. Project Structure</h2>
+<p>Create a new directory for the project:</p>
 
+<pre><code>jenkins-sonarqube/
+├── docker-compose.yml
+└── jenkins/
+    └── Dockerfile</code></pre>
 
-  <h2>4. Build the Docker Image</h2>
-  <pre><code>docker build -t nodejs-docker-app .</code></pre>
+<hr />
 
-  <h2>5. Run the Container</h2>
-  <pre><code>docker run -p 5000:8080 nodejs-docker-app</code></pre>
+<h2>3. Create Docker Compose Configuration</h2>
+<p>Create a file named <code>docker-compose.yml</code>:</p>
 
-  <p>You should now see your app running at <a href="http://localhost:5000" target="_blank">http://localhost:5000</a>.</p>
+<pre><code>version: "3.8"
 
-   <h2>3. Create Docker Compose</h2>
-    <p>Optionally, you can create a <code>docker-compose.yml</code> file to simplify running your container:</p>
-    <pre><code>version: '3'
 services:
-  web:
-    build: .
+  sonarqube:
+    image: sonarqube:9.9-community
+    container_name: sonarqube
+    ports:
+      - "9000:9000"
+    environment:
+      SONAR_ES_BOOTSTRAP_CHECKS_DISABLE: "true"
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_logs:/opt/sonarqube/logs
+      - sonarqube_extensions:/opt/sonarqube/extensions
+    networks:
+      - devops-net
+
+  jenkins:
+    build: ./jenkins
+    container_name: jenkins
     ports:
       - "8080:8080"
-  db:
-    image: "mysql"
-    environment: 
-      MYSQL_ROOT_PASSWORD: password
+      - "50000:50000"
     volumes:
-      - db-data:/foo
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    depends_on:
+      - sonarqube
+    networks:
+      - devops-net
 
 volumes:
-  db-data:
-</code></pre>
-    <p>Run the following command to start your application using Docker Compose:</p>
-    <pre><code>docker-compose up</code></pre>
-    <p>Your application should now be accessible at <a href="http://localhost:8080" target="_blank">http://localhost:8080</a>.</p>
-  <h2>Wrap-up</h2>
-  <p>That's it! You've created a Docker container for your Nodejs app and run it successfully. This same container can be pushed to Docker Hub or deployed to cloud platforms.</p>
+  jenkins_home:
+  sonarqube_data:
+  sonarqube_logs:
+  sonarqube_extensions:
 
+networks:
+  devops-net:</code></pre>
+
+<hr />
+
+<h2>4. Create Jenkins Dockerfile</h2>
+<p>
+This Dockerfile installs Docker CLI and basic utilities inside Jenkins so it can
+run pipelines properly.
+</p>
+
+<p>Create <code>jenkins/Dockerfile</code>:</p>
+
+<pre><code>FROM jenkins/jenkins:lts
+
+USER root
+
+RUN apt-get update && \
+    apt-get install -y docker.io curl unzip && \
+    apt-get clean
+
+USER jenkins</code></pre>
+
+<hr />
+
+<h2>5. Start Jenkins and SonarQube</h2>
+<p>From the project root directory, run:</p>
+
+<pre><code>docker compose up -d</code></pre>
+
+<p>Verify running containers:</p>
+
+<pre><code>docker ps</code></pre>
+
+<hr />
+
+<h2>6. Access Jenkins and SonarQube</h2>
+
+<h3>Jenkins</h3>
+<ul>
+  <li>URL: <code>http://localhost:8080</code></li>
+  <li>Get initial admin password:</li>
+</ul>
+
+<pre><code>docker exec jenkins cat /var/jenkins_home/secrets/initialAdminPassword</code></pre>
+
+<h3>SonarQube</h3>
+<ul>
+  <li>URL: <code>http://localhost:9000</code></li>
+  <li>Default credentials:</li>
+</ul>
+
+<pre><code>username: admin
+password: admin</code></pre>
+
+<p>Change the password when prompted.</p>
+
+<hr />
+
+<h2>7. Create SonarQube Token</h2>
+<p>In SonarQube:</p>
+<ul>
+  <li>Go to <strong>Administration → Security → Users</strong></li>
+  <li>Click <strong>Generate Token</strong></li>
+  <li>Copy and save the token</li>
+</ul>
+
+<hr />
+
+<h2>8. Configure Jenkins for SonarQube</h2>
+
+<h3>Install Required Plugins</h3>
+<p>Go to <strong>Manage Jenkins → Plugins</strong> and install:</p>
+<ul>
+  <li>SonarQube Scanner</li>
+  <li>Pipeline</li>
+  <li>Git</li>
+</ul>
+
+<h3>Add SonarQube Server</h3>
+<p>Go to <strong>Manage Jenkins → System</strong>:</p>
+
+<ul>
+  <li>Name: <code>sonarqube</code></li>
+  <li>Server URL: <code>http://sonarqube:9000</code></li>
+  <li>Authentication Token: SonarQube token</li>
+</ul>
+
+<p><strong>Note:</strong> The hostname <code>sonarqube</code> works because both containers share the same Docker network.</p>
+
+<hr />
+
+<h2>9. Install SonarQube Scanner Tool</h2>
+<p>Go to <strong>Manage Jenkins → Tools</strong>:</p>
+<ul>
+  <li>Name: <code>sonar-scanner</code></li>
+  <li>Enable automatic installation</li>
+</ul>
+
+<hr />
+
+<h2>10. Jenkins Pipeline to Check Connectivity</h2>
+<p>This pipeline verifies Jenkins can reach SonarQube and performs a code scan.</p>
+
+<pre><code>pipeline {
+  agent any
+
+  tools {
+    sonarScanner 'sonar-scanner'
+  }
+
+  environment {
+    SONAR_HOST_URL = 'http://sonarqube:9000'
+  }
+
+  stages {
+
+    stage('Check SonarQube Connectivity') {
+      steps {
+        sh 'curl -s ${SONAR_HOST_URL}/api/system/status'
+      }
+    }
+
+    stage('SonarQube Analysis') {
+      steps {
+        withSonarQubeEnv('sonarqube') {
+          sh '''
+          sonar-scanner \
+            -Dsonar.projectKey=demo-project \
+            -Dsonar.projectName=DemoProject \
+            -Dsonar.sources=.
+          '''
+        }
+      }
+    }
+
+    stage('Quality Gate') {
+      steps {
+        timeout(time: 5, unit: 'MINUTES') {
+          waitForQualityGate abortPipeline: true
+        }
+      }
+    }
+  }
+}</code></pre>
+
+<hr />
+
+<h2>11. Verify Connectivity</h2>
+<p>If successful, Jenkins logs will show:</p>
+
+<pre><code>{"status":"UP"}</code></pre>
+
+<p>If it fails, check:</p>
+<ul>
+  <li>SonarQube URL (do not use localhost)</li>
+  <li>Token configuration</li>
+  <li>Docker network</li>
+</ul>
+
+<hr />
+
+<h2>12. Clean Up</h2>
+<p>To stop and remove containers:</p>
+
+<pre><code>docker compose down -v</code></pre>
+
+<hr />
+
+<h2>Wrap-up</h2>
+<p>
+You have successfully deployed Jenkins and SonarQube using Docker Compose,
+connected them securely, and validated their integration through a Jenkins pipeline.
+This setup is production-ready and commonly used in real-world DevOps CI pipelines.
+</p>
 
 </body>
 </html>
