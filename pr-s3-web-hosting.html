@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Hosting a Static Website on AWS EC2</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<a href="index.html" class="back-button" title="Go back">
+  &#8592;
+</a>
+
+<h1>Hosting a Static Website on AWS Using EC2</h1>
+<p><em>By Samuel Nnanna</em></p>
+
+<p>
+This guide walks you through hosting a static website on an AWS EC2 instance. You’ll launch a server, install a web server, upload your site files, and make the site publicly accessible over the web. :contentReference[oaicite:1]{index=1}
+</p>
+
+<h2>1. Choose Your AWS Region</h2>
+<p>Log in to the AWS Management Console and pick a region close to your users (e.g., <code>us-east-1</code>). :contentReference[oaicite:2]{index=2}</p>
+
+<h2>2. Create a Security Group</h2>
+<p>Security groups control network access to your instance:</p>
+<pre><code>• Open AWS Console → VPC → Security Groups  
+• Create a security group  
+• Add inbound rules:  
+  - SSH (port 22) → source: your IP  
+  - HTTP (port 80) → source: anywhere (IPv4)</code></pre>
+<p>This allows you to connect via SSH and serve web traffic. :contentReference[oaicite:3]{index=3}</p>
+
+<h2>3. Launch an EC2 Instance</h2>
+<p>Create your EC2 virtual server:</p>
+<ul>
+  <li>Go to EC2 → Launch Instance</li>
+  <li>Choose Amazon Linux 2 AMI</li>
+  <li>Select <code>t2.micro</code> (free tier eligible)</li>
+  <li>Create or select a key pair (.pem file)</li>
+  <li>Assign the security group you created</li>
+  <li>Launch and wait for status checks to pass</li>
+</ul>
+<p>This instance will host your static website. :contentReference[oaicite:4]{index=4}</p>
+
+<h2>4. SSH Into the Instance</h2>
+<p>Find your instance’s public IPv4 address in the AWS console, then connect from your local terminal (example):</p>
+<pre><code>ssh -i "your-key.pem" ec2-user@your-public-ip</code></pre>
+<p>Type “yes” if prompted to continue connecting. :contentReference[oaicite:5]{index=5}</p>
+
+<h2>5. Install Required Software</h2>
+<p>Once logged in:</p>
+<pre><code>sudo -i  
+yum update -y  
+yum install httpd -y  
+cd /var/www/html</code></pre>
+<p>This installs Apache, the web server that will serve your static files. :contentReference[oaicite:6]{index=6}</p>
+
+<h2>6. Upload and Prepare Your Website Files</h2>
+<p>Download or upload your static website files to the EC2 instance (e.g., using <code>wget</code> or <code>scp</code>):</p>
+<pre><code>wget https://www.toolplate.com/zip-templates/2135_mini_finance.zip  
+unzip 2135_mini_finance.zip  
+cp -r 2135_mini_finance/* /var/www/html  
+rm -rf 2135_mini_finance 2135_mini_finance.zip</code></pre>
+<p>This copies your HTML/CSS/JS assets to Apache’s root directory. :contentReference[oaicite:7]{index=7}</p>
+
+<h2>7. Start the Web Server</h2>
+<p>Enable and start Apache so it serves your website:</p>
+<pre><code>systemctl enable httpd  
+systemctl start httpd</code></pre>
+<p>Your web server is now running. :contentReference[oaicite:8]{index=8}</p>
+
+<h2>8. Access Your Static Website</h2>
+<p>Open your browser and visit the public IPv4 address of your EC2 instance:</p>
+<pre><code>http://your-public-ip</code>/pre>
+<p>You should now see your static site live on the internet! :contentReference[oaicite:9]{index=9}</p>
+
+<h2>9. Clean Up (Optional)</h2>
+<p>If you no longer need the instance, remember to terminate it in the EC2 dashboard and delete any associated security group and keys to avoid charges. :contentReference[oaicite:10]{index=10}</p>
+
+<h2>Wrap-up</h2>
+<p>This tutorial showed how to deploy a static website using an AWS EC2 instance and the Apache web server. It’s a hands-on way to understand cloud servers, security, and website hosting fundamentals. :contentReference[oaicite:11]{index=11}</p>
+
+</body>
+</html>
