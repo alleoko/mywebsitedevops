@@ -24,24 +24,31 @@ const commands = {
     whoami() {
         return [
             'whoami: <white>Alejo Len Aclan</white>',
+            'works: <white>Application System Engineer / Cloud @ Fujitsu</white>',
             'skills: <white>DevOps/Cloud ❤️ ',
-            '* AWS',
-            '* Terraform',
-            '* Docker',
-            '* Kubernetes',
-            '* Jenkins',
-            '* Git',
-            '* Linux',
-            '---------------',
+            '* Application Support & System Engineering',
+            '* DevOps Fundamentals',
+            '* DevSecOps (Foundational – Actively Learning)',
+            '* CI/CD – Jenkins',
+            '* Code Quality & Security – SonarQube, Trivy',
+            '* Containers – Docker, Kubernetes',
+            '* Infrastructure as Code – Terraform (Learning)',
+            '* Cloud – AWS (EC2, S3 – ELB, IAM, VPC Basics, CloudWatch, RDS, Route53 etc)',
+            '* Version Control – Git',
+            '* Operating Systems – Linux , Windows',
+            '* Databases – MySQL, PostgreSQL',
+            '-----------------------------------------------------------------------',
             'my-projects:</white>',
             '* <a href="pr-docker-nodejs.html">Docker and Node.js</a>',
             '* <a href="pr-simple-ec2-terraform.html">Simple EC2 using Terraform</a>',
             '* <a href="pr-jenkins-sonarqube.html">Sonarqube and Jenkins Pipeline</a>',
             '* <a href="pr-s3-web-hosting.html">AWS S3 Web hosting</a>',
-            '<white>----------------</white>',
-            '<white>my-contacts</white>',
+            '<white>-------------------------------------------------------------------</white>',
+            '<white>my-certificates:</white>',
+            '* <a href="https://www.credly.com/users/alejo-len-aclan">Credly</a>',
+            '<white>my-contacts:</white>',
             '* <a href="https://alleoko.xyz">website</a>',
-            '* <a href="https://www.linkedin.com/in/alejo-len-aclan">linkedin</a>',
+            '* <a href="https://www.linkedin.com/in/alejo-len">linkedin</a>',
             '* email:alejolenaclan@gmail.com',
             '<a href="https://github.com/alleoko">Sponsor ❤️ my Open Source work in GITHUB</a>'
         ].join('\n');
@@ -52,10 +59,7 @@ const commands = {
             'My Projects:',
             '* <a href="https://terasdasd">AWS EC2 S3 Web deployment</a>',
             '* <a href="https://giasdasd.js/">CICD Jenkins</a>',
-            '* <a href="https://githuasdasdasdadcat">NGINX, MEMCACHED</a>',
-            '',
-            '<a href="https://giadsadsadaadsbic">Sponsor ❤️ my Open Source work</a>',
-            ''
+            '* <a href="https://githuasdasdasdadcat">NGINX, MEMCACHED</a>'
         ].join('\n');
     },
     help() {
@@ -84,12 +88,14 @@ function ready() {
     const seed = rand(256);
     term.echo(() => rainbow(render('Alleoko Portal'), seed))
         .echo('\n')
-        .echo('====================================================================')          
-        .echo('=                                                                  =')
-        .echo('=     <white>Type "help" to see the list of available commands.</white>           =')
-        .echo('=     <white>Type "whoami" to display my info.</white>                            =')
-        .echo('=                                                                  =')
-        .echo('====================================================================').resume();
+        .echo('========================================================================')          
+        .echo('=                                                                      =')          
+        .echo('=     <white>Hi! 👋 my name is Alejo, Software Engineer / Devops / Cloud</white>      =')
+        .echo('=                                                                      =')          
+        .echo('=     <white>Type <orange>"whoami"</orange> to display my other info.</white>                          =')
+        .echo('=     <white>Type <yellow>"help"</yellow> to see the list of available commands.</white>               =')
+        .echo('=                                                                      =')
+        .echo('========================================================================').resume();
 }
 
 function rainbow(string, seed) {
