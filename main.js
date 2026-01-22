@@ -47,7 +47,7 @@ const commands = {
             '<white>my-certificates:</white>',
             '* <a href="https://www.credly.com/users/alejo-len-aclan">Credly</a>',
             '<white>my-contacts:</white>',
-            '* <a href="https://alleoko.xyz">website</a>',
+            '* <a href="https://alleokloud.space">website</a>',
             '* <a href="https://www.linkedin.com/in/alejo-len">linkedin</a>',
             '* email:alejolenaclan@gmail.com',
             '<a href="https://github.com/alleoko">Sponsor ❤️ my Open Source work in GITHUB</a>'
@@ -72,7 +72,7 @@ const formatted_list = command_list.map(cmd => `<white class="command">${cmd}</w
 const help = formatter.format(formatted_list);
 
 const term = $('body').terminal(commands, {
-    prompt: '[[;orange;]guest]@[[;cyan;]alleoko.xzy]:[[;gray;]$ ~]', 
+    prompt: '[[;orange;]guest]@[[;cyan;]alleokloud]:[[;gray;]$ ~]', 
     completion: true,
     checkArity: false,
     greetings: false,
@@ -86,7 +86,7 @@ term.on('click', '.command', function() {
 
 function ready() {
     const seed = rand(256);
-    term.echo(() => rainbow(render('Alleoko Portal'), seed))
+    term.echo(() => rainbow(render('Alleokloud Space'), seed))
         .echo('\n')
         .echo('========================================================================')          
         .echo('=                                                                      =')          
