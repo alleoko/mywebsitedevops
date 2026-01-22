@@ -47,7 +47,7 @@ const commands = {
             '<white>my-certificates:</white>',
             '* <a href="https://www.credly.com/users/alejo-len-aclan">Credly</a>',
             '<white>my-contacts:</white>',
-            '* <a href="https://alleokloud.space">website</a>',
+            '* <a href="https://alleokloud.space">website </a>',
             '* <a href="https://www.linkedin.com/in/alejo-len">linkedin</a>',
             '* email:alejolenaclan@gmail.com',
             '<a href="https://github.com/alleoko">Sponsor ❤️ my Open Source work in GITHUB</a>'
