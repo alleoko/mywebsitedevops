@@ -1,3 +1,6 @@
+![Terminal Webpage](terminal.png)
+
+
 # Terminal Website
 
 Terminal Site
